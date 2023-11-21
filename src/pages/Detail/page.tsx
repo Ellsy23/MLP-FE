@@ -44,8 +44,8 @@ const DetailPage: FC = () => {
     fetchBannerImages();
   }, []);
   return (
-    <Box minHeight="inherit" p="10px 200px" bg="purple.50" alignContent="center">
-      <Box bgColor="white" minWidth="80%" p="10px 10px">
+    <Flex minHeight="inherit" flexDirection="column" justifyContent="space-between">
+      <Flex flexDirection="column" padding="1.2rem 0" gap="5px">
         <Box p={4}>
           <Flex flexDirection="column" gap="5px">
             <Heading as="h3" size="lg">
@@ -92,14 +92,14 @@ const DetailPage: FC = () => {
                   </Text>
                 </Text>
               </Box>
-              <Flex align-items="center">
+              <Flex alignItems="center">
                 {isSubscribed && (
-                  <Button colorScheme={'gray'} float="right" onClick={unSubscribe}>
+                  <Button colorScheme="gray" onClick={unSubscribe}>
                     판매자 구독 취소하기
                   </Button>
                 )}
                 {!isSubscribed && (
-                  <Button colorScheme={'brand'} float="right" onClick={subscribe}>
+                  <Button colorScheme="brand" onClick={subscribe}>
                     판매자 구독하기
                   </Button>
                 )}
@@ -121,8 +121,8 @@ const DetailPage: FC = () => {
         </Box>
 
         <ReservationButton />
-      </Box>
-    </Box>
+      </Flex>
+    </Flex>
   );
 };
 

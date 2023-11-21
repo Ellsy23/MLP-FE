@@ -43,7 +43,7 @@ const ImageViewer: FC<Props> = ({ images }) => {
           gap={2}
         >
           {images.map(image => {
-            const clicked = !!image && !!thumbImage && image[0] === thumbImage;
+            const clicked = !!image && !!thumbImage;
 
             return (
               <Flex
