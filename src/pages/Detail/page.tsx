@@ -1,10 +1,13 @@
 import { Box, Heading, Flex, Button, Badge, Text, Avatar, Stack } from '@chakra-ui/react';
 import { FC, useEffect, useState } from 'react';
 import ImageViewer from '../../components/ImageViewer';
+import ReservationButton from '../../components/ReservationButton';
+import { useCustomToast } from '../../hooks/useCustomToast';
 
 const DetailPage: FC = () => {
   const [images, setImages] = useState<string[]>([]);
-  ////temp
+  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
+  const toast = useCustomToast();
   const fetchBannerImages = async () => {
     try {
       const images = [
@@ -20,77 +23,106 @@ const DetailPage: FC = () => {
     }
   };
 
+  const subscribe = () => {
+    try {
+      setIsSubscribed(true);
+    } catch {
+      toast.error('구독 요청 실패:');
+    }
+  };
+
+  const unSubscribe = () => {
+    try {
+      setIsSubscribed(false);
+    } catch {
+      toast.error('구독 취소 요청 실패:');
+    }
+  };
+
   console.log(images);
   useEffect(() => {
     fetchBannerImages();
   }, []);
   return (
-    <Box minHeight="inherit" p="10px 200px" bg="purple.50">
-      <Box p={4}>
-        <Flex flexDirection="column" gap="5px">
-          <Heading as="h3" size="lg">
-            제목
-          </Heading>
-          <Flex alignItems="center" gap="10px" justifyContent="right">
-            <Badge fontSize="xl" variant="outline" colorScheme="brand">
-              마감 기한
-            </Badge>
-            <Text fontSize="xl" as="b">
-              2023.12.30
-            </Text>
-          </Flex>
-          <Flex gap="10px" justifyContent="right">
-            <ImageViewer images={images} />
-          </Flex>
-
-          <Flex alignItems="center" gap="10px" mb="5px" mt="5px">
-            <Badge fontSize="xl" colorScheme="purple.10">
-              클래스
-            </Badge>
-            <Text fontSize="xl" as="b">
-              하루 도자기 체험권
-            </Text>
-          </Flex>
-
-          <Text fontSize="xl" h="400px">
-            헤헤헤
-          </Text>
-        </Flex>
-
-        {/*seller*/}
-        <Box mt="auto">
-          <Flex>
-            <Avatar size="xl" name="임희정" src="https://bit.ly/broken-link" />
-            <Box ml="3" w="100%">
-              <Badge fontSize="xl" colorScheme="green">
-                판매자
-              </Badge>
-              <Text fontSize="xl" fontWeight="bold">
-                임희정님
-                <Text fontSize="xl" color="gray">
-                  판매 재고 100 후기 200
-                </Text>
-              </Text>
-            </Box>
-            <Flex align-items="center">
-              <Button colorScheme="brand">구독하기</Button>
-            </Flex>
-          </Flex>
-
-          {/*reservation*/}
-          <Box>
-            <Stack direction="row" justifyContent="right" gap="10px">
-              <Badge fontSize="xl" variant="outline" colorScheme="brand" justifyContent="center">
-                금액
+    <Flex minHeight="inherit" flexDirection="column" justifyContent="space-between">
+      <Flex flexDirection="column" padding="1.2rem 0" gap="5px">
+        <Box p={4}>
+          <Flex flexDirection="column" gap="5px">
+            <Heading as="h3" size="lg">
+              제목
+            </Heading>
+            <Flex alignItems="center" gap="10px" justifyContent="right">
+              <Badge fontSize="xl" variant="outline" colorScheme="brand">
+                마감 기한
               </Badge>
               <Text fontSize="xl" as="b">
-                10,000원
+                2023.12.30
               </Text>
-            </Stack>
+            </Flex>
+            <Flex gap="10px" justifyContent="right">
+              <ImageViewer images={images} />
+            </Flex>
+
+            <Flex alignItems="center" gap="10px" mb="5px" mt="5px">
+              <Badge fontSize="xl" colorScheme="brand">
+                클래스
+              </Badge>
+              <Text fontSize="xl" as="b">
+                하루 도자기 체험권
+              </Text>
+            </Flex>
+
+            <Text fontSize="xl" h="400px">
+              헤헤헤
+            </Text>
+          </Flex>
+
+          {/*seller*/}
+          <Box mt="auto">
+            <Flex>
+              <Avatar size="xl" name="임희정" src="https://bit.ly/broken-link" />
+              <Box ml="3" w="100%">
+                <Badge fontSize="xl" colorScheme="green">
+                  판매자
+                </Badge>
+                <Text fontSize="xl" fontWeight="bold">
+                  임희정님
+                  <Text fontSize="xl" color="gray">
+                    판매 재고 100 후기 200
+                  </Text>
+                </Text>
+              </Box>
+              <Flex alignItems="center">
+                {isSubscribed && (
+                  <Button colorScheme="gray" onClick={unSubscribe}>
+                    판매자 구독 취소하기
+                  </Button>
+                )}
+                {!isSubscribed && (
+                  <Button colorScheme="brand" onClick={subscribe}>
+                    판매자 구독하기
+                  </Button>
+                )}
+              </Flex>
+            </Flex>
+
+            {/*reservation*/}
+            <Box>
+              <Stack direction="row" justifyContent="right" gap="10px">
+                <Badge fontSize="xl" variant="outline" colorScheme="brand" justifyContent="center">
+                  금액
+                </Badge>
+                <Text fontSize="xl" as="b">
+                  10,000원
+                </Text>
+              </Stack>
+            </Box>
           </Box>
         </Box>
-      </Box>
-    </Box>
+
+        <ReservationButton />
+      </Flex>
+    </Flex>
   );
 };
 

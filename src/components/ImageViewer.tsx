@@ -8,7 +8,7 @@ interface Props {
 const HORIZONTAL_POINT = 'md';
 
 const ImageViewer: FC<Props> = ({ images }) => {
-  const [thumbImage, setThumbImage] = useState<string[]>();
+  const [thumbImage, setThumbImage] = useState<string[]>(images[0]);
 
   const handleImageClick = focusImage => {
     setThumbImage(focusImage);
@@ -43,7 +43,7 @@ const ImageViewer: FC<Props> = ({ images }) => {
           gap={2}
         >
           {images.map(image => {
-            const clicked = !!image && !!thumbImage && image[0] === thumbImage;
+            const clicked = !!image && !!thumbImage;
 
             return (
               <Flex
